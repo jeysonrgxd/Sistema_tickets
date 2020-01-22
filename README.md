@@ -42,7 +42,15 @@ Este sistema fue desarrollado con las tecnologías de PHP, MySQL, HTML5, CSS3, J
    - nacimiento
 
 - **Registro**
-   - registro_id(***PK***)
+   - registro_id (***PK***)
    - email (***FK***)
    - actividad (***FK***)
    - fecha
+
+## Relacion del modelo
+   1. Los **Participantes** crean un **Registro** (*1-1*).
+   1. Las **Actividades** se asignan a un **Registro** (*1-1*).
+
+## Diagrama relacional
+
+![MDRT](diagramaSisTickets.jpg,"modelo relacional")
