@@ -46,6 +46,7 @@ Este sistema fue desarrollado con las tecnologías de PHP, MySQL, HTML5, CSS3, J
    - email (***FK***)
    - actividad (***FK***)
    - fecha
+<<<<<<< HEAD
 
 ## Relacion del modelo
    1. Los **Participantes** crean un **Registro** (*1-1*).
@@ -54,3 +55,5 @@ Este sistema fue desarrollado con las tecnologías de PHP, MySQL, HTML5, CSS3, J
 ## Diagrama relacional
 
 ![MDRT](diagramaSisTickets.jpg,"modelo relacional")
+=======
+>>>>>>> 7414ad903136d16023bb1340019b4bc3e0449d11
