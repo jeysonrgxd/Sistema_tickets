@@ -42,7 +42,7 @@ Este sistema fue desarrollado con las tecnologías de PHP, MySQL, HTML5, CSS3, J
    - nacimiento
 
 - **Registro**
-   - registro_id(***PK***)
+   - registro_id (***PK***)
    - email (***FK***)
    - actividad (***FK***)
    - fecha
