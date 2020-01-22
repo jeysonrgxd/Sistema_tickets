@@ -53,4 +53,17 @@ Este sistema fue desarrollado con las tecnologías de PHP, MySQL, HTML5, CSS3, J
 
 ## Diagrama relacional
 
-![MDRT](diagramaSisTickets.jpg)
+![MDRT](app/diagramaSisTickets.jpg)
+
+## Operaciones CRUD
+
+- **Registrar Participantes:**
+   - Validar cupo de la actividad
+   - Insertar datos a las entidades Participantes y Registros.
+
+- **Listar Registro.**
+
+- ***Eliminar Participante:**
+   - Eliminar datos a las entidades Participantes y Registros.
+
+
