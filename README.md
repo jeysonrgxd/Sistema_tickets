@@ -53,4 +53,4 @@ Este sistema fue desarrollado con las tecnologías de PHP, MySQL, HTML5, CSS3, J
 
 ## Diagrama relacional
 
-![MDRT](diagramaSisTickets.jpg,"modelo relacional")
+![MDRT](diagramaSisTickets.jpg)
