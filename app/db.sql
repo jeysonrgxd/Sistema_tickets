@@ -61,30 +61,45 @@ CREATE PROCEDURE registrar_participante(
 )
 
 BEGIN
+
+   DECLARE existe_registro INT DEFAULT 0;
    DECLARE limite INT DEFAULT 0;
    DECLARE registrados INT DEFAULT 0;
-   DECLARE actividad_llena VARCHAR(255) DEFAULT "El bloque y actividad seleccionado, ya no tiene lugares disponibles";
+   DECLARE respuesta VARCHAR(255) DEFAULT "ok";
 
    /* boy a nesesitar si el cupo esta disponible y luego hacer 2 insercciones a diferentes tablas para esto creamos una transaccion debido que aremos varias afectaciones ala base de datos*/
    START TRANSACTION;
 
-      SELECT cupo INTO limite FROM actividades
-         WHERE actividad_id = _actividad;
+      SELECT COUNT(*) INTO existe_registro FROM registros
+         WHERE email = _email;
 
-      SELECT COUNT(*) INTO registrados FROM participantes
-         WHERE actividad = _actividad;
-      
-      IF registrados < limite THEN
+      IF existe_registro > 0 THEN
 
-         INSERT INTO participantes (email, nombre, apellido, nacimiento) 
-            VALUES (_email, _nombre, _apellido, _nacimiento);
-
-         INSERT INTO registro (email, actividad, fecha) 
-            VALUES (_email, _actividad, NOW()); 
+         SELECT "El correo electrónico ya asido registrado previamente, sólo puedes registrarte una vez. " AS respuesta;
 
       ELSE
 
-         SELECT actividad_llena;
+         SELECT cupo INTO limite FROM actividades
+            WHERE actividad_id = _actividad;
+
+         SELECT COUNT(*) INTO registrados FROM registros
+            WHERE actividad = _actividad;
+         
+         IF registrados < limite THEN
+
+            INSERT INTO participantes (email, nombre, apellidos, nacimiento) 
+               VALUES (_email, _nombre, _apellido, _nacimiento);
+
+            INSERT INTO registros (email, actividad, fecha) 
+               VALUES (_email, _actividad, NOW()); 
+
+            SELECT respuesta;
+
+         ELSE
+
+            SELECT "El bloque y actividad seleccionados, ya no tiene lugares disponibles. " AS respuesta;
+
+         END IF;
 
       END IF;
       
@@ -94,3 +109,31 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+-- crearemos un procedimiento almacenado para eliminar un participante
+DROP PROCEDURE IF EXISTS eliminar_participante
+
+DELIMITER $$
+
+CREATE PROCEDURE eliminar_participante(
+   IN _email VARCHAR(50)
+)
+
+BEGIN
+
+   DECLARE respuesta VARCHAR(50) DEFAULT 'ok';
+
+   START TRANSACTION;
+
+      DELETE FROM participantes
+         WHERE email = _email;
+
+      SELECT respuesta;
+
+   COMMIT;
+   
+END $$
+
+DELIMITER ;
+
+
