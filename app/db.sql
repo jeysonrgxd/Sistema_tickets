@@ -6,7 +6,7 @@ USE sistema_tickets;
 
 CREATE TABLE actividades(
    actividad_id CHAR(2) PRIMARY KEY,
-   bloque ENUM('KICK BOXING', 'YOGA', 'PILATES', 'ZUMBA') NOT NULL,
+   bloque ENUM('Bloque 1', 'Bloque 2', 'Bloque 3') NOT NULL,
    disciplina ENUM('KICK BOXING', 'YOGA', 'PILATES', 'ZUMBA') NOT NULL,
    horario VARCHAR(30) NOT NULL,
    cupo INTEGER NOT NULL
