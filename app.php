@@ -28,14 +28,35 @@
       $result = db_query($sql, $data,true);
 
       if ( count($result) === 0 ) {
+         // http_response_code(400); //le mandamos el status que ubo un error
          echo "No se encontro un horario para la disciplina $disciplina";
       } else {
-         echo "<pre>";
-         echo var_dump($result);
-         echo "</pre>";
+         // echo "<pre>";
+         // echo var_dump($result);
+         // echo "</pre>";
+         $html = '';
+
+         foreach($result as $row){
+            $cupo = obtener_cupo($row['actividad_id']);
+            $lugares_disponibles = $cupo['cupo'] - $cupo['registrados'];
+            $html .='
+               <p>
+                  <label>
+                     <input name="horario" type="radio" value="'. $row['actividad_id'] .'" required>
+                     <span>'.$row["horario"].'</span>
+                     <span>'.$row["bloque"].'</span>
+                     <span>Quedan <b>'.$lugares_disponibles.'</b> lugares disponibles</span>
+                  </label>
+               </p>
+            ';
+         }
+         echo $html;
+         // var_dump($result);
       }
       
    }
+
+   if(isset($_POST["disciplina"])) obtener_horarios($_POST["disciplina"]);
 
    function existe_registro ( $email ){
       $sql = "SELECT p.email, p.nombre, p.apellidos, p.nacimiento, a.bloque, a.disciplina, a.horario, r.fecha FROM registros AS r INNER JOIN actividades AS a ON a.actividad_id = r.actividad INNER JOIN participantes AS p ON p.email = r.email WHERE r.email = ?"; 
@@ -102,15 +123,42 @@
       
    }
 
+   if(isset($_POST["email"])) 
+      crear_registro(
+         $_POST['nombre'],
+         $_POST['apellidos'],
+         $_POST['email'],
+         $_POST['nacimiento'],
+         $_POST['horario']
+      );
+
    function obtener_registros(){
       $sql = "SELECT p.email, p.nombre, p.apellidos, p.nacimiento, a.bloque, a.disciplina, a.horario, r.fecha FROM registros AS r INNER JOIN actividades AS a ON a.actividad_id = r.actividad INNER JOIN participantes AS p ON p.email = r.email ORDER BY r.fecha, a.bloque, a.disciplina, a.horario";
       
       $resp = db_query($sql, null, true ); //recordar que me trae un array asociativo
-      
+      $html ="";
       if(count($resp) === 0 ){
          return "No existen registros";
       } else {
-         return $resp;
+         foreach($resp as $row){
+            $html .='
+               <tr>
+                  <td>' .$row['email']. '</td>
+                  <td>' .$row['nombre']. '</td>
+                  <td>' .$row['apellidos']. '</td>
+                  <td>' .$row['nacimiento']. '</td>
+                  <td>' .$row['bloque']. '</td>
+                  <td>' .$row['disciplina']. '</td>
+                  <td>' .$row['horario']. '</td>
+                  <td>' .$row['fecha']. '</td>
+                  <td>
+                     <a href="#" class="btn-floating lime">
+                        <i  class="material-icons delete" data-registro="'.$row["email"].'">delete</i>
+                     </a>
+                  </td>
+               </tr>';
+         }
+         return $html;
       }
       
    }
@@ -122,8 +170,10 @@
       return $resp;
 
    }
-   echo var_dump(eliminar_participante('test10@gmail.com')) . PHP_EOL;
-   echo var_dump(obtener_registros());
+
+   if(isset($_POST["elimina_registro"])) eliminar_participante($_POST["elimina_registro"])
+   // echo var_dump(eliminar_participante('test10@gmail.com')) . PHP_EOL;
+   // echo var_dump(obtener_registros());
 
    // echo "<p>";
    // echo var_dump(crear_registro("jeyson","ramos garcia","jeysonrgxd@gmail.com","1994-12-10","1P"));

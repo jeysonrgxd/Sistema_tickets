@@ -60,6 +60,6 @@ function enviar_email ($registro) {
   $cabeceras.= "From: Entrena Tu Glamour <no-reply@glamour.mx>\r\n";
 //   $cabeceras.= "Bcc: Jonathan MirCha <jonmircha@gmail.com>, Valeria Cano <valeria.cano@condenast.com.mx>\r\n";
 
-  echo $mensaje;
+  // echo $mensaje;
   //mail($para, $asunto, $mensaje, $cabeceras);
 }

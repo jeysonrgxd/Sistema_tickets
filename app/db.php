@@ -24,17 +24,17 @@
    function db_query($sql, $data=array(), $is_search = false, $search_one = false){
 
       $db = db_connect();
-      $PDOstate = $db->prepare($sql); //preparamos la consulta enviandole el array de conexion
+      $PDOstate = $db->prepare($sql); //preparamos la consulta enviandole un string con la consulta
       $PDOstate->execute($data); //ejecutamos laconsulta pasandole el array de valores
 
       if( $is_search ){
          // para consultas de tipo READ
 
          if( $search_one ){
-            //para buscar un registro
+            //para buscar un registro me devuelve un array pero de una fila de una consulta y si seguimos ejecutandola nos traera la siguien y asi susesivamente
             $result = $PDOstate->fetch(PDO::FETCH_ASSOC); 
          } else {
-            // para buscar todos los registros
+            // para buscar todos los registros me devuelve un array con todo los registro
             $result = $PDOstate->fetchAll(PDO::FETCH_ASSOC); 
 
          }
